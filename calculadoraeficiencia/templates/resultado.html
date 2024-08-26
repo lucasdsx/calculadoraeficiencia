@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultado</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&display=swap" rel="stylesheet">
+   <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
+  <style>
+    body {
+      background-color: white;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .header-section {
+      background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+      background-size: cover;
+      color: white;
+      padding: 20px;
+    }
+    .header-section h2 {
+      font-weight: 400;
+    }
+    .nivel {
+      font-size: 2rem;
+      background-color: #8a2be2;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+    .nota-por-categoria {
+      margin-top: 20px;
+    }
+    .progress {
+      height: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .progress-bar {
+      font-size: 1.2rem;
+      line-height: 30px;
+      font-weight: 900;
+    }
+    .progress-bar-blue {
+      background-color: #2f318f;
+    }
+    .progress-bar-purple {
+      background-color: #60327d;
+    }
+    .progress-bar-red {
+      background-color: #de1f2c;
+    }
+    .progress-bar-gray {
+      background-color: #575759;
+    }
+    .btn-pdf {
+      background-color: #383474;
+      color: white;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 1.25rem;
+      text-decoration: none;
+      font-size: 1.25rem;
+      display: inline-block;
+      margin-top: 2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-pdf:hover {
+      background-color: #CD2F44;
+      text-decoration: none; /* Remover sublinhado ao passar o mouse */
+      color:white;
+    }
+    .btn-pdf:link,
+    .btn-pdf:visited {
+      text-decoration: none; /* Remover sublinhado */
+    }
+    p {
+      font-weight: 400;
+    }
+    p strong {
+      font-weight: 700;
+    }
+    h3 {
+      font-weight: 500; /* Ajustar o peso para ser menos grosso */
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid text-center header-section">
+    <h2>SUA EFICIÊNCIA ATUAL NOS PROCESSOS DE<br> GESTÃO DE CUSTOS ESTÁ EM</h2>
+  </div>
+
+  <div class="container mt-5">
+    <div class="nota-por-categoria">
+      <div class="progress">
+        <div class="progress-bar
+          {% if resultado.pesototal < 5 %} progress-bar-gray
+          {% elif resultado.pesototal < 7 %} progress-bar-red
+          {% elif resultado.pesototal < 8.5 %} progress-bar-purple
+          {% else %} progress-bar-blue
+          {% endif %}"
+          style="width: {{ (resultado.pesototal / 10) * 100 }}%;">
+          {{ resultado.pesototal }}
+        </div>
+      </div>
+    </div>
+    <br>
+    <h3 class="text-center">Resultado</h3> <!-- Peso da fonte ajustado -->
+    <div class="text-center">
+      {% if resultado.pesototal < 5 %}
+        <p><strong>Atenção!</strong> Os processos de Gestão de Custos da sua empresa ainda estão engatinhando. Porém, não precisa se preocupar! Conte com a TÁTICO, que garantimos em fazer esse foguete decolar rapidinho!</p>
+      {% elif resultado.pesototal < 7 %}
+        <p><strong>Legal!</strong> Os processos de Gestão de Custos da sua empresa estão em desenvolvimento. Para acelerar essa evolução, a TÁTICO pode auxiliar a sua empresa! Conte com a gente!</p>
+      {% elif resultado.pesototal < 8.5 %}
+        <p><strong>Muito Bom!</strong>  Os processos de Gestão de Custos da sua empresa estão bem definidos! Ainda existem alguns pontos de melhoria, mas vocês estão no caminho certo! Contem com a TÁTICO, caso precisem acelerar esta evolução!</p>
+      {% else %}
+        <p><strong>Excelente!</strong> A Gestão de Custos da sua empresa é muito eficiente! É apenas uma questão de tempo para maximizar os resultados dos seus empreendimentos!</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="text-center mt-4">
+    <a href="{{ url_for('gerar_pdf_reportlab') }}" class="btn-pdf">GERAR PDF</a>
+  </div>
+  <br><br>
+  <div class="text-center">
+    <img src="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido.jpg') }}" alt="Logo" class="img-fluid" style="max-width: 100px;">
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Adicione o efeito de preenchimento da barra de progresso -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var progressBar = document.querySelector(".progress-bar");
+      var width = progressBar.style.width;
+      progressBar.style.width = "0";
+      setTimeout(function() {
+        progressBar.style.width = width;
+      }, 100); // Atraso para iniciar a animação
+    });
+  </script>
+</body>
+</html>

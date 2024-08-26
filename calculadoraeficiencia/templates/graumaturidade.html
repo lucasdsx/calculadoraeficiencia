@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
+    <title>Grau de Eficiência</title>
+    <style>
+        .root{
+            font-size:24px
+
+        }
+          body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            font-size: 1rem; /* Tamanho da fonte base */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+             background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+            background-size: cover;
+            color: white;
+            padding: 8rem 1rem; /* Aumentar o padding para mais espaço */
+        }
+        .header h1 {
+            font-size: 3rem; /* Ajustar o tamanho da fonte */
+            margin: 0; /* Remover margens extras */
+        }
+        .container {
+            flex: 1;
+            padding: 2rem 1rem; /* Ajustar o padding para mais espaço */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .button {
+            background-color: #383474; /* Cor roxa para combinar com a referência */
+            color: white;
+            font-family: "Montserrat";
+            font-weight: bold;
+            padding: 1rem 2rem; /* Ajustar o padding */
+            border: none;
+            border-radius: 1.25rem;
+            text-decoration: none;
+            font-size: 1.25rem; /* Ajustar o tamanho da fonte do botão */
+            display: inline-block;
+            margin-top: 2rem; /* Aumentar o espaçamento superior */
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adicionar sombra para destacar */
+        }
+        .button:hover {
+            background-color: #CD2F44;
+        }
+        .logo {
+            margin-top: 3rem; /* Aumenta o espaçamento superior */
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .logo img {
+            width: 10rem; /* Ajusta a largura da imagem */
+            height: auto;
+        }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                padding: 6rem 1rem; /* Reduz o padding em telas menores */
+            }
+            .header h1 {
+                font-size: 2.5rem; /* Reduz o tamanho da fonte em telas menores */
+            }
+            .container {
+                padding: 1.5rem 1rem; /* Ajusta o padding */
+            }
+            .button {
+                font-size: 1rem; /* Reduz o tamanho da fonte do botão */
+                padding: 0.75rem 1.5rem; /* Reduz o padding do botão */
+            }
+        }
+        @media (max-width: 480px) {
+            .header {
+                padding: 4rem 1rem; /* Reduz ainda mais o padding em telas muito pequenas */
+            }
+            .header h1 {
+                font-size: 2rem; /* Reduz ainda mais o tamanho da fonte */
+            }
+            .container {
+                padding: 1rem 0.5rem; /* Ajusta o padding */
+            }
+            .button {
+                font-size: 0.875rem; /* Reduz ainda mais o tamanho da fonte do botão */
+                padding: 0.5rem 1rem; /* Reduz ainda mais o padding do botão */
+            }
+            .logo {
+                margin-top: 2rem; /* Reduz o espaçamento superior */
+            }
+            .logo img {
+                width: 8rem; /* Ajusta a largura da imagem */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>GRAU DE EFICIÊNCIA</h1>
+    </div>
+    <div class="container">
+        <h2>Bem-vindo ao Diagnóstico de Gestão de Custos da Tático Soluções!</h2>
+        <p> Você está prestes a descobrir como tornar sua gestão de custos mais eficiente.
+        Com base nas suas respostas e na metodologia MPa, você poderá entender quais as oportunidades de otimização dos seus processos.</p>
+        <a href="{{ url_for('diagnosticomaturidade') }}" class="button">INICIAR DIAGNÓSTICO</a>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido.jpg') }}" alt="Logo" class="logo">
+        </div>
+    </div>
+</body>
+</html>

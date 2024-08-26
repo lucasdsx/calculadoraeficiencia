@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de Eficiência</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
+
+  <style>
+    :root {
+      font-size: 16px; /* Base size for rem units */
+    }
+
+    html, body {
+      height: 100%; /* Certifique-se de que o html e o body ocupem 100% da altura da tela */
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .carousel-item {
+      padding: 2rem;
+    }
+
+    .carousel-indicators {
+      display: none;
+    }
+
+    .btn-next, .btn-prev, .btn-result {
+      background-color: #383474;
+      color: #fff;
+      border-radius: 20px;
+      font-family: "Montserrat";
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .btn-next:hover, .btn-prev:hover, .btn-result:hover {
+      background-color: #CD2F44;
+    }
+
+    .btn-next:disabled, .btn-prev:disabled, .btn-result:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .question-slide {
+      font-family: "Montserrat";
+      font-size: 20px;
+    }
+
+    .logo {
+      width: 100px; /* Adjust the width as needed */
+      height: auto; /* Maintain aspect ratio */
+      align-items: center;
+    }
+
+    .header {
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: white;
+    }
+
+    .footer {
+      width: 100%; /* Faz o rodapé ocupar toda a largura da tela */
+      background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+      backgrouned-repeat: no-repeat;
+      background-size: cover;
+      color: white;
+      font-family: "Montserrat";
+      font-weight: lighter;
+      text-align: center;
+      padding: 1rem 0; /* Adiciona padding para espaçamento vertical */
+      bottom: 0; /* Alinha o rodapé na parte inferior */
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 id="page-header">META</h1>
+  </header>
+
+  <div id="mainCarousel" class="carousel slide" data-interval="false">
+    <div class="carousel-inner">
+      <!-- Carrossel de META -->
+      <div class="carousel-item active">
+        <div class="d-flex flex-column align-items-start">
+          <div class="question-slide">
+            <p><b>1. Qual a média de obras simultâneas com que a empresa atua?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question1" id="q1a1" data-weight="0.1">
+                <label class="form-check-label" for="q1a1">
+                  1
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question1" id="q1a2" data-weight="0.25">
+                <label class="form-check-label" for="q1a2">
+                  2
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question1" id="q1a3" data-weight="0.5">
+                <label class="form-check-label" for="q1a3">
+                  3+
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="question-slide">
+            <p><b>2. Qual a média de lançamentos por ano da empresa? </b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question2" id="q2a1" data-weight="0.05">
+                <label class="form-check-label" for="q2a1">
+                  1
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question2" id="q2a2" data-weight="0.1">
+                <label class="form-check-label" for="q2a2">
+                  2
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question2" id="q2a3" data-weight="0.2">
+                <label class="form-check-label" for="q2a3">
+                  3+
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="question-slide">
+            <p><b>3. Como são realizadas as viabilidades para novos empreendimentos?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question3" id="q3a1" data-weight="0.5">
+                <label class="form-check-label" for="q3a1">
+                    Realizadas com apoio de <b>consultorias/pesquisas</b> externas.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question3" id="q3a2" data-weight="0.25">
+                <label class="form-check-label" for="q3a2">
+                    A empresa possui um banco de dados das últimas obras e utilizam como base.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question3" id="q3a3" data-weight="0.1">
+                <label class="form-check-label" for="q3a3">
+                  Utilizam o <b>CUB</b> como base.
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>4. Quantos orçamentos, em média, são realizados do início da concepção do empreendimento até o final da obra?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question4" id="q4a1" data-weight="0.25">
+                <label class="form-check-label" for="q4a1">
+                    1
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question4" id="q4a2" data-weight="0.5">
+                <label class="form-check-label" for="q4a2">
+                    2
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question4" id="q4a3" data-weight="0.6">
+                <label class="form-check-label" for="q4a3">
+                  3
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question4" id="q4a4" data-weight="0.75">
+                <label class="form-check-label" for="q4a4">
+                  4+
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>5. Em que fase são contratados os projetistas responsáveis pelos projetos complementares (Hidrossanitário, Preventivo, Elétrico...)?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question5" id="q5a1" data-weight="0.5">
+                <label class="form-check-label" for="q5a1">
+                    Antes do lançamento do empreendimento/após a viabilidade
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question5" id="q5a2" data-weight="0.3">
+                <label class="form-check-label" for="q5a2">
+                    Logo após o lançamento do empreendimento (de 1 a 6 meses)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question5" id="q5a3" data-weight="0">
+                <label class="form-check-label" for="q5a3">
+                  No início/durante a obra
+                </label>
+              </div>
+            </form>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn-prev" onclick="prevSlide()">ANTERIOR</button>
+            <button class="btn-next" id="nextButtonMeta" onclick="nextMetaSlide()" disabled>PRÓXIMO</button>
+          </div>
+        </div>
+      </div>
+      <!-- Carrossel de PLANO -->
+      <div class="carousel-item">
+        <div class="d-flex flex-column align-items-start">
+          <div class="question-slide">
+            <p><b>6. Qual o ERP utilizado pela empresa?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question6" id="q6a1" data-weight="1.25">
+                <label class="form-check-label" for="q6a1">
+                  Sienge
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question6" id="q6a2" data-weight="1.25">
+                <label class="form-check-label" for="q6a2">
+                  MEGA
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question6" id="q6a3" data-weight="0.5">
+                <label class="form-check-label" for="q6a3">
+                    Outros
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question6" id="q6a4" data-weight="0">
+                <label class="form-check-label" for="q6a4">
+                  Não utiliza
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>7. A empresa trabalha com a metodologia BIM?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question7" id="q7a1" data-weight="0.2">
+                <label class="form-check-label" for="q7a1">
+                    Está no processo de implementação
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question7" id="q7a2" data-weight="0.2">
+                <label class="form-check-label" for="q7a2">
+                    Já foi implementado
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question7" id="q7a3" data-weight="0">
+                <label class="form-check-label" for="q7a3">
+                  Não trabalha com BIM
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>8. Está em qual fase de implantação?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question8" id="q8a1" data-weight="0">
+                <label class="form-check-label" for="q8a1">
+                    Não trabalha com BIM
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question8" id="q8a2" data-weight="0.75">
+                <label class="form-check-label" for="q8a2">
+                    3D - Modelagem Paramétrica
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question8" id="q8a3" data-weight="1">
+                <label class="form-check-label" for="q8a3">
+                    4D - Tempo (Planejamento)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question8" id="q8a4" data-weight="1.25">
+                <label class="form-check-label" for="q8a4">
+                    5D - Custos (Orçamentação)
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>9. Já conhece ou utiliza a Linha de Balanço (LOB)?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question9" id="q9a1" data-weight="1.25">
+                <label class="form-check-label" for="q9a1">
+                    Utiliza Prevision ou Agilean
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question9" id="q9a2" data-weight="0.75">
+                <label class="form-check-label" for="q9a2">
+                    Utiliza em Excel
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question9" id="q9a3" data-weight="0.5">
+                <label class="form-check-label" for="q9a3">
+                    Conhece, mas utiliza Project
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question9" id="q9a4" data-weight="0.1">
+                <label class="form-check-label" for="q9a4">
+                    Conhece, mas utiliza Excel em formato de lista
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question9" id="q9a5" data-weight="0">
+                <label class="form-check-label" for="q9a5">
+                    Não conhece
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="question-slide">
+            <p><b>10. Utilizam outras soluções? (Permite mais de uma resposta)</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="question10" id="q10a1" data-weight="0.05">
+                <label class="form-check-label" for="q10a1">
+                  Software de Qualidade para as obras (Ex: Mobuss e InMeta)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="question10" id="q10a2" data-weight="0.05">
+                <label class="form-check-label" for="q10a2">
+                  Software para Gestão de Projetos (Ex: Construflow, Autodoc ou Trello)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="question10" id="q10a3" data-weight="0.1">
+                <label class="form-check-label" for="q10a3">
+                  Análise e integração de dados (Hinc ou BI)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="question10" id="q10a4" data-weight="0">
+                <label class="form-check-label" for="q10a4">
+                  Não utiliza nenhuma das soluções acima
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="question-slide">
+            <p><b>11. Como ocorre o processo de orçamentação da empresa atualmente?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a1" data-weight="0.4">
+                <label class="form-check-label" for="q11a1">
+                  Possui um único responsável interno para realizar o processo
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a2" data-weight="0.5">
+                <label class="form-check-label" for="q11a2">
+                  Possui uma equipe interna para realizar o processo
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a3" data-weight="0.4">
+                <label class="form-check-label" for="q11a3">
+                  Orçamento terceirizado, mas acompanham com um único funcionário
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a4" data-weight="0.5">
+                <label class="form-check-label" for="q11a4">
+                  Orçamento terceirizado, mas acompanham com uma equipe interna (+1 funcionário)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a5" data-weight="0.2">
+                <label class="form-check-label" for="q11a5">
+                  Não há pessoa responsável diretamente na área e quem acompanha é o engenheiro da obra
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question11" id="q11a6" data-weight="0.1">
+                <label class="form-check-label" for="q11a6">
+                  Não há pessoa responsável diretamente na área e quem acompanha é a diretoria
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="question-slide">
+            <p><b>12. Como ocorre o processo de planejamento da empresa atualmente?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question12" id="q12a1" data-weight="0.15">
+                <label class="form-check-label" for="q12a1">
+                  Possui um único responsável interno para realizar o processo
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question12" id="q12a2" data-weight="0.2">
+                <label class="form-check-label" for="q12a2">
+                  Possui uma equipe interna para realizar o processo
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question12" id="q12a3" data-weight="0.2">
+                <label class="form-check-label" for="q12a3">
+                  Planejamento terceirizado mas acompanham com uma equipe interna (+1 funcionário)
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question12" id="q12a4" data-weight="0.15">
+                <label class="form-check-label" for="q12a4">
+                  Não há pessoa responsável diretamente na área e quem acompanha é o engenheiro da obra
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question12" id="q12a5" data-weight="0.05">
+                <label class="form-check-label" for="q12a5">
+                  Não há pessoa responsável diretamente na área e quem acompanha é a diretoria
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+          <div class="text-center mt-4">
+            <button class="btn-prev" onclick="prevSlide()">ANTERIOR</button>
+            <button class="btn-next" id="nextButtonPlano" onclick="nextPlanoSlide()" disabled>PRÓXIMO</button>
+          </div>
+        </div>
+      </div>
+      <!-- Carrossel de AÇÃO -->
+      <div class="carousel-item">
+        <div class="d-flex flex-column align-items-start">
+            <div class="question-slide">
+            <p><b>13. Todos os departamentos possuem acesso às informações financeiras/de custos das obras?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question13" id="q13a1" data-weight="0">
+                <label class="form-check-label" for="q13a1">
+                  Não, apenas o setor financeiro e diretoria.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question13" id="q13a2" data-weight="0.25">
+                <label class="form-check-label" for="q13a2">
+                  Não, apenas setores relacionados diretamente a cada uma das obras (Ex: Planejamento, Orçamento, Engenharia Obra, Compras/Suprimentos, Financeiro e Diretoria).
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question13" id="q13a3" data-weight="0.5">
+                <label class="form-check-label" for="q13a3">
+                  Sim, todos os setores possuem acesso.
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="question-slide">
+            <p><b>14. Como são realizadas as compras para as obras?</b></p>
+            <form class="question-form">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question14" id="q14a1" data-weight="0">
+                <label class="form-check-label" for="q14a1">
+                  Os pedidos são realizados em cima da hora.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question14" id="q14a2" data-weight="0.2">
+                <label class="form-check-label" for="q14a2">
+                  Possuem reuniões mensais para acompanhamento das compras.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question14" id="q14a3" data-weight="0.2">
+                <label class="form-check-label" for="q14a3">
+                  Possuem reuniões trimestrais para acompanhamento das compras.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question14" id="q14a4" data-weight="0.1">
+                <label class="form-check-label" for="q14a4">
+                  Possuem reuniões semestrais para acompanhamento das compras.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question14" id="q14a5" data-weight="0.1">
+                <label class="form-check-label" for="q14a5">
+                  Possuem reuniões para acompanhamento das compras, mas com outra frequência.
+                </label>
+              </div>
+            </form>
+          </div>
+          <br>
+
+              <div class="question-slide">
+                <p><b>15. Realizam análises físico-financeiras?</b></p>
+                <form class="question-form">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a1" data-weight="1.25">
+                    <label class="form-check-label" for="q15a1">
+                      Sim, realizam análises físico-financeiras via BI ou outra ferramenta de visualização de dados.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a2" data-weight="1">
+                    <label class="form-check-label" for="q15a2">
+                      Sim, realizam análises físico-financeiras manualmente via Excel.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a3" data-weight="0.75">
+                    <label class="form-check-label" for="q15a3">
+                      Não, analisam separadamente o físico e o financeiro, sem conexão.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a4" data-weight="0.25">
+                    <label class="form-check-label" for="q15a4">
+                      Não, analisam somente o financeiro.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a5" data-weight="0.25">
+                    <label class="form-check-label" for="q15a5">
+                      Não, analisam somente o físico.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question15" id="q15a6" data-weight="0">
+                    <label class="form-check-label" for="q15a6">
+                      Não há esta análise.
+                    </label>
+                  </div>
+                </form>
+              </div>
+              <br>
+
+              <div class="question-slide">
+                <p><b>16. Realizam as análises com qual frequência?</b></p>
+                <form class="question-form">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question16" id="q16a1" data-weight="0">
+                    <label class="form-check-label" for="q16a1">
+                      Não realizam
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question16" id="q16a2" data-weight="0.25">
+                    <label class="form-check-label" for="q16a2">
+                      Mensal
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question16" id="q16a3" data-weight="0.2">
+                    <label class="form-check-label" for="q16a3">
+                      Trimestral
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question16" id="q16a4" data-weight="0.1">
+                    <label class="form-check-label" for="q16a4">
+                      Semestral
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question16" id="q16a5" data-weight="0">
+                    <label class="form-check-label" for="q16a5">
+                      Anual
+                    </label>
+                  </div>
+                </form>
+              </div>
+              <br>
+
+              <div class="question-slide">
+                <p><b>17. Qual o nível de envolvimento da diretoria no acompanhamento (físico e/ou financeiro) durante a execução das obras?</b></p>
+                <form class="question-form">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question17" id="q17a1" data-weight="0.5">
+                    <label class="form-check-label" for="q17a1">
+                      Acompanham por meio de relatórios/reuniões mensais.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question17" id="q17a2" data-weight="0.25">
+                    <label class="form-check-label" for="q17a2">
+                      Acompanham por meio de relatórios/reuniões trimestrais.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question17" id="q17a3" data-weight="0.1">
+                    <label class="form-check-label" for="q17a3">
+                      Acompanham por meio de comunicações mais rápidas e informais (Ex: WhatsApp).
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question17" id="q17a4" data-weight="0">
+                    <label class="form-check-label" for="q17a4">
+                      Não há envolvimento direto com o acompanhamento.
+                    </label>
+                  </div>
+                </form>
+              </div>
+          <div class="text-center mt-4">
+            <button class="btn-prev" onclick="prevSlide()">ANTERIOR</button>
+            <button class="btn-result" onclick="verResultado()" disabled>VER RESULTADO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <img src="{{ url_for('static', filename='images/logo-rodape-v3.svg') }}" alt="Logo" class="logo">
+    <p>&copy; 2024 Tático Soluções. Todos os direitos reservados.</p>
+  </div>
+
+  <form id="resultadoForm" action="{{ url_for('salvar_resultado') }}" method="POST" style="display: none;">
+      <input type="hidden" name="cliente_id" value="{{ cliente_id }}">
+      <input type="hidden" name="pesototal" id="pesototal">
+      <input type="hidden" name="pesometa" id="pesometa">
+      <input type="hidden" name="pesoplano" id="pesoplano">
+      <input type="hidden" name="pesoacao" id="pesoacao">
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    let globalTotalWeight = 0;
+    let slideWeights = { meta: 0, plano: 0, acao: 0 }; // Objeto para armazenar pesos de cada slide
+
+    document.querySelectorAll('.question-form').forEach(form => {
+      form.addEventListener('change', (event) => {
+        const slide = event.currentTarget.closest('.carousel-item');
+        const slideIndex = Array.from(document.querySelectorAll('.carousel-item')).indexOf(slide);
+        const allForms = Array.from(slide.querySelectorAll('.question-form'));
+        const allAnswered = allForms.every(form => {
+          const inputs = form.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+          return Array.from(inputs).some(input => input.checked);
+        });
+        const nextButton = slide.querySelector('.btn-next');
+        const resultButton = slide.querySelector('.btn-result')
+        if (nextButton) {
+          nextButton.disabled = !allAnswered;
+        }
+        if (resultButton){
+          resultButton.disabled = !allAnswered;
+        }
+
+        // Calculate weights for the current slide
+        let slideTotalWeight = 0;
+        allForms.forEach(form => {
+          const selectedInputs = form.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+          selectedInputs.forEach(input => {
+            slideTotalWeight += parseFloat(input.getAttribute('data-weight'));
+          });
+        });
+
+        if (slideIndex === 0) {
+          slideWeights.meta = slideTotalWeight;
+        } else if (slideIndex === 1) {
+          slideWeights.plano = slideTotalWeight;
+        } else if (slideIndex === 2) {
+          slideWeights.acao = slideTotalWeight;
+        }
+
+        globalTotalWeight = slideWeights.meta + slideWeights.plano + slideWeights.acao;
+
+        console.log('Global Total Weight:', globalTotalWeight); // Valor total global
+      });
+    });
+
+    function prevSlide() {
+      $('#mainCarousel').carousel('prev');
+      updateHeader();
+    }
+
+    function nextMetaSlide() {
+      handleSlideChange('next');
+    }
+
+    function nextPlanoSlide() {
+      handleSlideChange('next');
+    }
+
+    function handleSlideChange(direction) {
+      const activeSlide = document.querySelector('#mainCarousel .carousel-item.active');
+      const allForms = Array.from(activeSlide.querySelectorAll('.question-form'));
+      const allFormsAnswered = allForms.every(form => {
+        const inputs = form.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        return Array.from(inputs).some(input => input.checked);
+      });
+
+      if (allFormsAnswered) {
+        let slideTotalWeight = 0;
+        allForms.forEach(form => {
+          const selectedInputs = form.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+          selectedInputs.forEach(input => {
+            slideTotalWeight += parseFloat(input.getAttribute('data-weight'));
+          });
+        });
+
+        const slideIndex = Array.from(document.querySelectorAll('.carousel-item')).indexOf(activeSlide);
+        if (slideIndex === 0) {
+          slideWeights.meta = slideTotalWeight;
+        } else if (slideIndex === 1) {
+          slideWeights.plano = slideTotalWeight;
+        } else if (slideIndex === 2) {
+          slideWeights.acao = slideTotalWeight;
+        }
+
+        globalTotalWeight = slideWeights.meta + slideWeights.plano + slideWeights.acao;
+
+        $('#mainCarousel').carousel(direction);
+        const nextButton = document.querySelector('#mainCarousel .carousel-item.active .btn-next');
+        if (nextButton) {
+          nextButton.disabled = true; // Ensure next button is disabled initially for new slide
+        }
+
+        console.log('Global Total Weight after slide change:', globalTotalWeight);
+      }
+      updateHeader();
+    }
+
+    function updateHeader() {
+      const activeSlide = document.querySelector('#mainCarousel .carousel-item.active');
+      const header = document.getElementById('page-header');
+      if (activeSlide) {
+        const questionNumbers = Array.from(activeSlide.querySelectorAll('.question-form .form-check-input')).map(input => parseInt(input.name.match(/\d+/)[0]));
+
+        if (questionNumbers.some(num => num >= 1 && num <= 5)) {
+          header.textContent = 'META';
+        } else if (questionNumbers.some(num => num >= 6 && num <= 12)) {
+          header.textContent = 'PLANO';
+        } else {
+          header.textContent = 'AÇÃO';
+        }
+      }
+    }
+
+    function verResultado() {
+    // Captura todas as respostas e pesos
+    const forms = document.querySelectorAll('.question-form');
+    let responses = {};
+
+    forms.forEach(form => {
+        const questionNumber = form.querySelector('input').name.match(/\d+/)[0];
+        const selectedOptions = form.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+
+        if (selectedOptions.length > 0) {
+            responses[`question${questionNumber}`] = {
+                resposta: [],
+                peso: 0
+            };
+
+            selectedOptions.forEach(option => {
+                const weight = parseFloat(option.getAttribute('data-weight'));
+                const answer = option.parentElement.innerText.trim();
+
+                responses[`question${questionNumber}`].resposta.push(answer);
+                responses[`question${questionNumber}`].peso += weight;
+            });
+        }
+    });
+
+    // Defina os valores nos campos ocultos
+    document.getElementById('pesototal').value = globalTotalWeight;
+    document.getElementById('pesometa').value = slideWeights.meta;
+    document.getElementById('pesoplano').value = slideWeights.plano;
+    document.getElementById('pesoacao').value = slideWeights.acao;
+
+    // Adiciona as respostas no formulário oculto
+    const respostasInput = document.createElement('input');
+    respostasInput.type = 'hidden';
+    respostasInput.name = 'respostas';
+    respostasInput.value = JSON.stringify(responses);
+    document.getElementById('resultadoForm').appendChild(respostasInput);
+
+    // Submete o formulário
+    document.querySelector('#resultadoForm').submit();
+}
+
+
+    $('#mainCarousel').on('slid.bs.carousel', updateHeader);
+  </script>
+</body>
+</html>

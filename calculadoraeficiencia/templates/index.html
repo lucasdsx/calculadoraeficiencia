@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Eficiência</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+     <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
+    
+    <style>
+        :root {
+    font-size: 16px; /* Base size for rem units */
+}
+body {
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background: #4e3b8d;
+    color: #fff;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Montserrat';
+    padding: 0 1em;
+}
+
+.main {
+    padding: 2em 0;
+}
+
+.calculator-section,.cta-section {
+    padding: 2em 0;
+}
+.cta-section{
+    text-align: center;
+}
+
+.calculator-section {
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.calculator-section .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-be;
+    align-items: center;
+}
+
+.calculator-info {
+    flex: 1;
+    padding: 1.75rem;
+    margin-right: 5rem;
+    
+  
+}
+
+.calculator-info h3, .calculator-info p {
+    margin: 0.5em 0;
+}
+h2 .calculator-info  {
+    margin-bottom: 0.625rem;
+    font-family: "Montserrat";
+ 
+}
+
+.calculator-form {
+    flex: 1;
+    padding: 1em;
+    background: #f4f4f4;
+    border-radius: 8px;
+}
+
+.calculator-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.calculator-form label {
+    margin: 0.5em 0 0.2em;
+}
+
+.calculator-form input, .calculator-form select {
+    margin-bottom: 0.9375rem;
+    padding: 0.625rem;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+.calculator-form .consent input[type="checkbox"] {
+    width: 20px; /* Ajuste o tamanho conforme necessário */
+    height: 20px; /* Ajuste o tamanho conforme necessário */
+    margin-right: 10px; /* Espaçamento entre o checkbox e o texto */
+}
+.calculator-form .consent label {
+    display: inline-block;
+    vertical-align: middle;
+}
+.calculator-form .form-footer {
+    display: flex;
+    align-items: center;
+}
+
+.calculator-form .form-footer input {
+    margin-right: 0.5em;
+}
+
+.button {
+    padding: 0.625rem;
+    background: white;
+    border: none;
+    border-radius: 4px;
+    color: #CD2F44;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: "Montserrat";
+    font-weight: bold;
+    animation: pulse 2s infinite alternate;
+}
+
+.button:hover {
+    background: #372b6c;
+    color: white
+}
+
+
+.calculator-form{
+    background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+    border-radius: 8px;
+    font-family: "Montserrat";
+    color: white;
+}
+
+.calculator-form form .consent {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+.logo{
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: auto;
+    }
+    
+.pillars {
+    display: flex;
+    justify-content: center
+}
+
+.btn-pulse {
+    padding: 0.625rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #CD2F44;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: "Montserrat";
+    font-weight: bold;
+    outline: none;
+    box-shadow: 0 0 0 rgba(255,255,255);
+    animation: pulse 2s infinite;
+}
+
+.btn-pulse:hover {
+    background-color: #372b6c;
+}
+
+.no-link-style {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Use the button's text color */
+    display: block; /* Make the link fill the button */
+}
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 rgba(255,255, 255, 0.5);
+    }
+    50% {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+  }
+  @media (min-width: 600px) {
+    .container {
+        flex-direction: row;
+    }
+    .info, .form-container {
+        padding: 2.5rem;
+    }
+}
+  
+.benefits-section {
+    padding: 2em 0;
+    text-align: center;
+}
+
+.benefits-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefits-section h2 {
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+.benefits {
+    display: flex;
+    justify-content: space-around;
+    
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.benefit-item {
+    flex: 1;
+    margin: 1em;
+    max-width: 250px;
+    text-align: center;
+    
+}
+
+.benefit-item img {
+    border-radius: 50%;
+    background-image: url('{{ url_for('static', filename='images/fundo.png') }}');
+    padding: 10px;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Maintain aspect ratio */
+    object-fit: cover;
+}
+
+.benefit-item p {
+    margin-top: 0.5em;
+    font-size: 1em;
+}
+
+.calculator-info .subtext {
+    font-size: 0.9rem;
+    color: #555;
+}
+   .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-family: Montserrat, sans-serif;git in
+    font-size: 1rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+    </style>
+</head>    
+<body>
+
+
+    <main>
+        <section class="calculator-section">
+            <div class="container">
+                <div class="logo"><link rel ="icon" href="images/TATICO_avatar_02_jpg_NF_BNU.jpg">
+                 <img src="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido.jpg') }}" alt="Logo" class="logo">
+                </div>
+
+                <div class="calculator-info">
+                    <h1>Avalie a eficiência da Gestão de Custos da sua obra gratuitamente!</h1>
+                    <br>
+                    <p class="subtext">Acesse agora e descubra como aperfeiçoar a gestão e controle de suas obras!</p>
+
+                    <p>A maioria dos projetos enfrentam problemas relacionados ao controle de custos, resultando em atrasos e orçamentos estourados. Uma gestão de custos eficiente e um planejamento detalhado são essenciais para evitar esses problemas e garantir a entrega dos projetos dentro do orçamento.</p>
+                    <p>Quer entender como está a eficiência da gestão de custos da sua obra e como melhorá-la? Nosso Diagnóstico de Gestão de Custos é uma ferramenta gratuita que avalia a eficiência dos seus processos de gestão e fornece recomendações personalizadas.</p>
+                    <p>Ao preencher o formulário, você descobrirá em quais etapas da gestão de custos há oportunidades de otimização e receberá orientações práticas sobre os próximos passos para alcançar seus objetivos.</p>
+                </div>
+                <div class="calculator-form">
+                    <h2>Preencha o formulário e calcule gratuitamente!</h2>
+                    <form id="maturityForm" method="post">
+
+    {{ form.csrf_token }}
+    <div>
+        {{ form.nome.label() }}
+        {{ form.nome() }}
+    </div>
+    <div>
+    {{ form.email.label() }}
+    {{ form.email(class_="form-control") }}
+    {% if form.email.errors %}
+        <div class="alert alert-danger">
+            {% for error in form.email.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+    <div>
+            {{ form.telefone.label() }}
+            {{ form.telefone(class_="form-control") }}
+            {% if form.telefone.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.telefone.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    <div>
+        {{ form.empresa.label() }}
+        {{ form.empresa() }}
+    </div>
+    <div>
+        {{ form.cargo.label() }}
+        {{ form.cargo() }}
+    </div>
+    <div>
+        <label for="setor">Setor:</label>
+        <select name="setor" id="setor" required>
+            <option value="" disabled selected>Selecione uma opção</option>
+            {% for value, label in form.setor.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="consent">
+        {{ form.consent() }}
+        {{ form.consent.label() }}
+    </div>
+     <br>
+    <div>
+         {{ form.botao_enviar(class_="button") }}
+    </div>
+</form>
+        </section>
+        <section id="beneficios" class="cta-section" >
+            <div class="container">
+                <h2>Benefícios do Diagnóstico</h2>
+                <div class="benefits">
+                    <div class="benefit-item">
+                          <img src="{{ url_for('static', filename='images/icons8-cost-50.png') }}" alt="gestao">
+                        <p>Entenda em quais etapas da gestão de custos você pode melhorar</p>
+                    </div>
+                    <div class="benefit-item">
+                         <img src="{{ url_for('static', filename='images/avaliacao.png') }}" alt="avaliacao">
+                        <p>Receba uma avaliação clara e objetiva sobre a eficiência dos seus processos de gestão de custos</p>
+                    </div>
+                    <div class="benefit-item">
+                      <img src="{{ url_for('static', filename='images/processo.png') }}" alt="processo">
+                        <p>Conheça mais sobre a metodologia utilizada em mais de 400 obras e 5 milhões de m².</p>
+                    </div>
+                </div>
+            </div>
+           <button class="btn-pulse">
+    <a href="{{ url_for('homepage') }}" class="no-link-style">DESCUBRA AGORA</a>
+</button>
+
+
+        </section>
+    </main>
+</body>
+</html>
+
+        
+     
+    
