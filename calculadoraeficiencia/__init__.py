@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
+import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:admin@localhost/clientes"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("PI")
 app.config['SECRET_KEY'] = 'admin'
 database = SQLAlchemy(app)
 
