@@ -4,8 +4,8 @@ from flask_mail import Mail
 import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] =  "mysql+pymysql://root:admin@localhost/clientes"
-app.config['SECRET_KEY'] = 'admin'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config['SECRET_KEY'] = "admin"
 database = SQLAlchemy(app)
 
 # Configurações do Flask-Mail para Gmail
