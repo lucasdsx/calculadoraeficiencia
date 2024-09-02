@@ -65,6 +65,8 @@ def resultado():
         flash("Erro: Nenhum diagnóstico encontrado para o cliente.", "danger")
         return redirect(url_for('diagnosticomaturidade'))
 
+
+
     return render_template("resultado.html", resultado=resultado)
 
 
@@ -201,24 +203,39 @@ def gerar_pdf_reportlab():
         elements.append(Paragraph(peso_text, default_style))  # Peso em estilo normal
         elements.append(Spacer(1, 12))
 
+    # Calcular os valores normalizados para cada categoria na escala de 0 a 10
+    nota_meta = (resultado.pesometa / 2.45) * 10
+    nota_plano = (resultado.pesoplano / 4.85) * 10
+    nota_acao = (resultado.pesoacao / 2.7) * 10
+
+    titulo_notas = Paragraph("Notas por categoria", bold_style)
+    elements.append(titulo_notas)
+
+    # Adicionando as notas de Meta, Plano e Ação no PDF, uma abaixo da outra
+    meta = Paragraph(f"Nota Meta: {nota_meta:.2f}", bold_style)
+    plano = Paragraph(f"Nota Plano: {nota_plano:.2f}", bold_style)
+    acao = Paragraph(f"Nota Ação: {nota_acao:.2f}", bold_style)
+
+    # Adicionar um espaçamento entre as notas, se necessário
+    elements.append(Spacer(1, 12))  # Adiciona um pequeno espaço antes das notas
+    elements.append(meta)
+    elements.append(plano)
+    elements.append(acao)
+
+    elements.append(Spacer(1, 12))  # Adiciona um pequeno espaço antes das notas
+
     nota_final = Paragraph(f"Nota Final: {resultado.pesototal:.2f}", bold_style)
     elements.append(nota_final)
 
-    # Adicionando mensagem baseada na nota final
-    if resultado.pesototal < 5:
-        mensagem = "Atenção! Os processos de Gestão de Custos da sua empresa ainda estão engatinhando. " \
-                   "Porém, não precisa se preocupar! Conta com a TÁTICO, que garantimos em fazer esse foguete" \
-                   " decolar rapidinho!"
-    elif 5 <= resultado.pesototal <= 7:
-        mensagem = "Legal! Os processos da Gestão de Custos da sua empresa estão em desenvolvimento. Para acelerar" \
-                   " essa evolução, a TÁTICO pode auxiliar a sua empresa! Conta com a gente!"
-    elif 7 <= resultado.pesototal <= 8.5:
-        mensagem = "Muito bom! Os processos da Gestão de Custos da sua empresa estão bem definidos! Ainda existem" \
-                   " alguns pontos de melhoria, mas vocês estão no caminho certo! Contem com a TÁTICO, " \
-                   "caso precisem acelerar esta evolução!"
+    # Determinar a menor nota
+    menor_nota = min(nota_meta, nota_plano, nota_acao)
+    if menor_nota == nota_meta:
+        mensagem = "A sua pontuação em Gestão de Custos indica que a etapa de Meta requer mais atenção. Para avançar, concentre-se em otimizar os Estudos de Viabilidade, garantindo o alinhamento entre a expectativa de custo total, a tipologia do produto e o VGV. No Orçamento Paramétrico, é importante validar o produto, o padrão do empreendimento e as particularidades técnicas. Já no Orçamento Pré-Executivo e Planejamento Inicial, foque no lançamento comercial e na definição da meta de custo total, assegurando que todos os parâmetros estejam bem estabelecidos e controlados."
+    elif menor_nota == nota_plano:
+        mensagem = "A sua pontuação em Gestão de Custos indica que a etapa de Plano requer mais atenção. Para melhorar nesta fase, é fundamental aprimorar a elaboração do Orçamento e Planejamento Operacional. Concentre-se na validação detalhada das composições de serviço, na correta segmentação da Estrutura Analítica de Projeto (EAP) e na prospecção de propostas comerciais para itens da Curva A."
     else:
-        mensagem = "Excelente! A Gestão de Custos da sua empresa é muito eficiente! É apenas uma questão de tempo" \
-                   " para maximizar os resultados dos seus empreendimentos! "
+        mensagem = "A sua pontuação em Gestão de Custos indica que a etapa de Ação precisa de atenção. Para avançar nesta etapa, é crucial concentrar-se no Monitoramento e Controle dos indicadores de custo e prazo. Garanta que as equipes de Suprimentos, Execução e Financeiro estejam devidamente treinadas e engajadas no uso das ferramentas e na inserção das informações necessárias. Além disso, é importante gerenciar ativamente os contratos e medições para assegurar que todos os aspectos do projeto estejam sendo acompanhados de perto e ajustados conforme necessário."
+
 
     mensagem_final = Paragraph(mensagem, default_style)
     elements.append(mensagem_final)
@@ -231,7 +248,7 @@ def gerar_pdf_reportlab():
     if cliente.consent:
         destinatarios.append(cliente.email)
 
-    destinatarios.append('cliente@taticosolucoes.com.br')  # E-mail fixo adicional
+    #destinatarios.append('cliente@taticosolucoes.com.br')  # E-mail fixo adicional
 
     if destinatarios:
         msg = Message("Resultado do Diagnóstico de Eficiência", recipients=destinatarios)

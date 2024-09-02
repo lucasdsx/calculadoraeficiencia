@@ -6,7 +6,7 @@
   <title>Resultado</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&display=swap" rel="stylesheet">
-   <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido-simbolo.ico') }}" type="image/x-icon">
   <style>
     body {
       background-color: white;
@@ -21,127 +21,351 @@
     .header-section h2 {
       font-weight: 400;
     }
-    .nivel {
-      font-size: 2rem;
-      background-color: #8a2be2;
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 10px;
-    }
-    .nota-por-categoria {
-      margin-top: 20px;
-    }
-    .progress {
-      height: 30px;
-      border-radius: 15px;
+
+    /* Estilos para a barra de progresso geral */
+    .progress-geral {
+      height: 60px; /* Aumentado para 60px */
       width: 100%;
-      max-width: 500px;
+      max-width: 800px; /* Aumentado o max-width para destacar */
       margin: 0 auto;
+      background-color: #e9ecef;
+      border-radius: 30px; /* Aumentado o border-radius */
     }
+
+    .progress-geral .progress-bar {
+      font-size: 2rem; /* Aumentado para destacar mais o texto */
+      line-height: 60px; /* Alinhado ao centro verticalmente */
+      font-weight: 900;
+      border-radius: 30px; /* Aumentado o border-radius */
+      background-color: #575759;
+    }
+
+    .categories {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      justify-content: center;
+      align-content: center;
+    }
+
+    .categories h2 {
+      font-size: 1.75rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .category {
+      margin-bottom: 20px;
+    }
+
+    .category p {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .progress {
+      height: 30px; /* Mantido para as barras individuais */
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #e9ecef;
+      border-radius: 15px;
+    }
+
     .progress-bar {
       font-size: 1.2rem;
       line-height: 30px;
       font-weight: 900;
+      border-radius: 15px;
+      background-color: #e9ecef;
     }
+
     .progress-bar-blue {
       background-color: #2f318f;
     }
+
     .progress-bar-purple {
       background-color: #60327d;
     }
+
     .progress-bar-red {
       background-color: #de1f2c;
     }
+
     .progress-bar-gray {
       background-color: #575759;
     }
+
     .btn-pdf {
       background-color: #383474;
       color: white;
       font-family: "Montserrat", sans-serif;
       font-weight: 600;
-      padding: 1rem 2rem;
+      padding: 1.5rem 3rem; /* Aumentado para 1.5rem de altura e 3rem de largura */
       border: none;
-      border-radius: 1.25rem;
+      border-radius: 2rem; /* Aumentado o border-radius */
       text-decoration: none;
-      font-size: 1.25rem;
+      font-size: 1.5rem; /* Aumentado o tamanho da fonte */
       display: inline-block;
-      margin-top: 2rem;
+      margin-top: 2.5rem; /* Aumentado o espaçamento superior */
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
     .btn-pdf:hover {
       background-color: #CD2F44;
-      text-decoration: none; /* Remover sublinhado ao passar o mouse */
-      color:white;
+      text-decoration: none;
+      color: white;
     }
+
     .btn-pdf:link,
     .btn-pdf:visited {
-      text-decoration: none; /* Remover sublinhado */
+      text-decoration: none;
     }
+
     p {
       font-weight: 400;
+      font-size: 1.2rem; /* Aumentando o tamanho da fonte para igualar ao category p */
     }
+
     p strong {
       font-weight: 700;
     }
+
     h3 {
-      font-weight: 500; /* Ajustar o peso para ser menos grosso */
+      font-weight: 700;
     }
+
+    /* Estilos para as caixas de níveis */
+    .box {
+      width: 30%;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fafafa;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .selected {
+      background-color: #eeedff;
+      border: 2px solid #383474;
+      position: relative;
+    }
+
+    .selected::after {
+      content: "✔";
+      font-size: 20px;
+      color: #383474;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .box h3 {
+      margin-top: 0;
+    }
+
+    .box p {
+      margin-bottom: 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .header-section h2 {
+        font-size: 1.5rem;
+      }
+
+      .progress-geral {
+        height: 50px; /* Reduzido um pouco para telas menores */
+        max-width: 100%;
+      }
+
+      .progress-geral .progress-bar {
+        font-size: 1.5rem; /* Ajustado para telas menores */
+        line-height: 50px;
+      }
+
+      .categories h2 {
+        font-size: 1.25rem;
+      }
+
+      .progress {
+        height: 25px; /* Ajustado para telas menores */
+        max-width: 100%;
+      }
+
+      .progress-bar {
+        font-size: 1rem;
+        line-height: 25px;
+      }
+
+      .box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .btn-pdf {
+        font-size: 1.25rem; /* Ajustado o tamanho da fonte */
+        padding: 1.25rem 2.5rem; /* Ajustado o padding */
+      }
+    }
+
+    @media (max-width: 576px) {
+      .header-section h2 {
+        font-size: 1.25rem;
+      }
+
+      .progress-geral {
+        height: 45px; /* Ajustado ainda mais para telas muito pequenas */
+        max-width: 100%;
+      }
+
+      .progress-geral .progress-bar {
+        font-size: 1.25rem; /* Ajustado para telas menores */
+        line-height: 45px;
+      }
+
+      .categories h2 {
+        font-size: 1rem;
+      }
+
+      .progress {
+        height: 20px; /* Ajustado para telas menores */
+        max-width: 100%;
+      }
+
+      .progress-bar {
+        font-size: 0.875rem;
+        line-height: 20px;
+      }
+
+      .btn-pdf {
+        font-size: 1rem; /* Ajustado o tamanho da fonte */
+        padding: 1rem 2rem; /* Ajustado o padding */
+      }
+    }
+
   </style>
 </head>
 <body>
-  <div class="container-fluid text-center header-section">
-    <h2>SUA EFICIÊNCIA ATUAL NOS PROCESSOS DE<br> GESTÃO DE CUSTOS ESTÁ EM</h2>
-  </div>
+  <!-- Seção de Cabeçalho -->
+  <section class="header-section text-center">
+    <div class="container-fluid">
+      <h2>SUA EFICIÊNCIA ATUAL NOS PROCESSOS DE<br> GESTÃO DE CUSTOS ESTÁ EM</h2>
+    </div>
+  </section>
 
-  <div class="container mt-5">
-    <div class="nota-por-categoria">
-      <div class="progress">
-        <div class="progress-bar
-          {% if resultado.pesototal < 5 %} progress-bar-gray
-          {% elif resultado.pesototal < 7 %} progress-bar-red
-          {% elif resultado.pesototal < 8.5 %} progress-bar-purple
-          {% else %} progress-bar-blue
-          {% endif %}"
-          style="width: {{ (resultado.pesototal / 10) * 100 }}%;">
-          {{ resultado.pesototal }}
+  <br>
+
+  <!-- Seção de Progresso Total -->
+  <section>
+    <div class="container">
+      <div class="category">
+        <div class="progress progress-geral">
+          <div class="progress-bar" style="width: {{ (resultado.pesototal / 10) * 100 }}%;">
+            {{ resultado.pesototal }}
+          </div>
         </div>
       </div>
     </div>
-    <br>
-    <h3 class="text-center">Resultado</h3> <!-- Peso da fonte ajustado -->
-    <div class="text-center">
-      {% if resultado.pesototal < 5 %}
-        <p><strong>Atenção!</strong> Os processos de Gestão de Custos da sua empresa ainda estão engatinhando. Porém, não precisa se preocupar! Conte com a TÁTICO, que garantimos em fazer esse foguete decolar rapidinho!</p>
-      {% elif resultado.pesototal < 7 %}
-        <p><strong>Legal!</strong> Os processos de Gestão de Custos da sua empresa estão em desenvolvimento. Para acelerar essa evolução, a TÁTICO pode auxiliar a sua empresa! Conte com a gente!</p>
-      {% elif resultado.pesototal < 8.5 %}
-        <p><strong>Muito Bom!</strong>  Os processos de Gestão de Custos da sua empresa estão bem definidos! Ainda existem alguns pontos de melhoria, mas vocês estão no caminho certo! Contem com a TÁTICO, caso precisem acelerar esta evolução!</p>
-      {% else %}
-        <p><strong>Excelente!</strong> A Gestão de Custos da sua empresa é muito eficiente! É apenas uma questão de tempo para maximizar os resultados dos seus empreendimentos!</p>
-      {% endif %}
+  </section>
+
+  <br>
+
+  <!-- Seção de Mensagem com Base no Resultado -->
+<section>
+    <div class="container mt-5">
+      <div class="text-center">
+         {% set nota_meta = (resultado.pesometa / 2.45) * 10 %}
+            {% set nota_plano = (resultado.pesoplano / 4.85) * 10 %}
+            {% set nota_acao = (resultado.pesoacao / 2.7) * 10 %}
+            {% set menor_nota = [nota_meta, nota_plano, nota_acao]|min %}
+        {% if menor_nota == nota_meta %}
+          <p>A sua pontuação em Gestão de Custos indica que a etapa de Meta requer mais atenção. Para avançar, concentre-se em otimizar os Estudos de Viabilidade, garantindo o alinhamento entre a expectativa de custo total, a tipologia do produto e o VGV. No Orçamento Paramétrico, é importante validar o produto, o padrão do empreendimento e as particularidades técnicas. Já no Orçamento Pré-Executivo e Planejamento Inicial, foque no lançamento comercial e na definição da meta de custo total, assegurando que todos os parâmetros estejam bem estabelecidos e controlados.</p>
+        {% elif menor_nota == nota_plano %}
+          <p>A sua pontuação em Gestão de Custos indica que a etapa de Plano requer mais atenção. Para melhorar nesta fase, é fundamental aprimorar a elaboração do Orçamento e Planejamento Operacional. Concentre-se na validação detalhada das composições de serviço, na correta segmentação da Estrutura Analítica de Projeto (EAP) e na prospecção de propostas comerciais para itens da Curva A.</p>
+        {% elif menor_nota == nota_acao %}
+          <p>A sua pontuação em Gestão de Custos indica que a etapa de Ação precisa
+              de atenção. Para avançar nesta etapa, é crucial concentrar-se no
+              Monitoramento e Controle dos indicadores de custo e prazo. Garanta que as
+              equipes de Suprimentos, Execução e Financeiro estejam devidamente
+              treinadas e engajadas no uso das ferramentas e na inserção das
+              informações necessárias. Além disso, é importante gerenciar ativamente os
+              contratos e medições para assegurar que todos os aspectos do projeto
+              estejam sendo acompanhados de perto e ajustados conforme necessário</p>
+        {% endif %}
+      </div>
     </div>
-  </div>
-  <div class="text-center mt-4">
-    <a href="{{ url_for('gerar_pdf_reportlab') }}" class="btn-pdf">GERAR PDF</a>
-  </div>
+  </section>
+
+
+  <br>
+
+  <!-- Seção de Progresso por Categoria -->
+  <section class="categories">
+    <div class="container">
+      <h2>Nota por categoria:</h2>
+      <div class="category">
+        <p>Meta</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-red" style="width: {{ (resultado.pesometa / 2.45) * 100 }}%;">
+            {{ "%.2f"|format((resultado.pesometa / 2.45) * 10) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="category">
+        <p>Plano</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-purple" style="width: {{ (resultado.pesoplano / 4.85) * 100 }}%;">
+            {{ "%.2f"|format((resultado.pesoplano / 4.85) * 10) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="category">
+        <p>Ação</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-blue" style="width: {{ (resultado.pesoacao / 2.7) * 100 }}%;">
+            {{ "%.2f"|format((resultado.pesoacao / 2.7) * 10) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br>
+
+  <!-- Seção de Botão para Gerar PDF -->
+  <section class="text-center">
+    <div class="container mt-4">
+      <a href="{{ url_for('gerar_pdf_reportlab') }}" class="btn-pdf">GERAR PDF</a>
+    </div>
+  </section>
+
   <br><br>
-  <div class="text-center">
-    <img src="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido.jpg') }}" alt="Logo" class="img-fluid" style="max-width: 100px;">
-  </div>
+
+  <!-- Seção de Rodapé -->
+  <section class="text-center">
+    <div class="container">
+      <img src="{{ url_for('static', filename='images/TATICO_logotipo_01_colorido.jpg') }}" alt="Logo" class="img-fluid" style="max-width: 100px;">
+    </div>
+  </section>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- Adicione o efeito de preenchimento da barra de progresso -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      var progressBar = document.querySelector(".progress-bar");
-      var width = progressBar.style.width;
-      progressBar.style.width = "0";
-      setTimeout(function() {
-        progressBar.style.width = width;
-      }, 100); // Atraso para iniciar a animação
+      var progressBars = document.querySelectorAll(".progress-bar");
+      progressBars.forEach(function(progressBar) {
+        var width = progressBar.style.width;
+        progressBar.style.width = "0";
+        setTimeout(function() {
+          progressBar.style.width = width;
+        }, 100);
+      });
     });
   </script>
 </body>
