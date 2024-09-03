@@ -42,12 +42,12 @@ def homepage():
     return render_template("index.html", form=formlead)
 
 
-@app.route("/graumaturidade")
+@app.route("/graueficiencia")
 def graumaturidade():
     return render_template("graumaturidade.html")
 
 
-@app.route("/diagnosticomaturidade")
+@app.route("/diagnosticoeficiencia")
 def diagnosticomaturidade():
     cliente_id = session.get('cliente_id')
     return render_template("diagnosticomaturidade.html", cliente_id=cliente_id)
@@ -248,7 +248,7 @@ def gerar_pdf_reportlab():
     if cliente.consent:
         destinatarios.append(cliente.email)
 
-    #destinatarios.append('cliente@taticosolucoes.com.br')  # E-mail fixo adicional
+    destinatarios.append('cliente@taticosolucoes.com.br')  # E-mail fixo adicional
 
     if destinatarios:
         msg = Message("Resultado do Diagnóstico de Eficiência", recipients=destinatarios)
