@@ -264,7 +264,7 @@
       <div class="category">
         <div class="progress progress-geral">
           <div class="progress-bar" style="width: {{ (resultado.pesototal / 10) * 100 }}%;">
-            {{ resultado.pesototal }}
+            {{  "%.2f"|format(resultado.pesototal) }}
           </div>
         </div>
       </div>
